@@ -1,0 +1,34 @@
+# Slack app manifest for the Overdrive bot.
+# Create the app at https://api.slack.com/apps -> "From a manifest", paste this,
+# then ask HQ to approve installing it in the Hack Club workspace.
+display_information:
+  name: Overdrive
+  description: 500,000 hours or bust. RSVP for Overdrive, a Hack Club YSWS.
+  background_color: "#111111"
+features:
+  bot_user:
+    display_name: Overdrive
+    always_online: true
+  unfurl_domains:
+    - overdrive.vaultless.dev
+oauth_config:
+  scopes:
+    bot:
+      - chat:write        # ephemerals + DMs
+      - im:write          # open DMs
+      - links:read        # link_shared events
+      - links:write       # chat.unfurl
+      - channels:join     # join the RSVP channel before inviting
+      - channels:manage   # conversations.invite into a public channel
+      - users:read
+settings:
+  event_subscriptions:
+    request_url: https://overdrive.vaultless.dev/slack/events
+    bot_events:
+      - link_shared
+  interactivity:
+    is_enabled: true
+    request_url: https://overdrive.vaultless.dev/slack/interactions
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Overdrive · 500,000 hours or bust" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Overdrive is a Hack Club program for teenagers who build hardware and software. Help break the all-time shipped hours record and bring the color back. Opens summer 2027.">
+    <meta property="og:title" content="Overdrive · 500,000 hours or bust">
+    <meta property="og:description" content="A Hack Club program for teens who build hardware and software. Opens summer 2027. RSVP now.">
+    <meta name="theme-color" content="#111111">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icon.png" type="image/png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen">
+    <header class="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
+      <%= link_to root_path, class: "font-display text-xl font-black tracking-tight", style: "font-stretch: 125%" do %>OVERDRIVE<% end %>
+      <div class="flex items-center gap-4 text-sm">
+        <span class="od-eyebrow hidden sm:inline">Opens summer 2027</span>
+        <% if current_user %>
+          <span class="text-muted"><%= current_user.display_name %></span>
+          <% if current_user.admin? %><%= link_to "Admin", admin_rsvps_path, class: "underline underline-offset-4" %><% end %>
+          <%= button_to "Sign out", logout_path, method: :delete, class: "underline underline-offset-4 text-muted hover:text-ink" %>
+        <% end %>
+      </div>
+    </header>
+
+    <% if notice || alert %>
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <p role="status" class="rounded-md border border-line bg-surface px-4 py-3 text-sm">
+          <span class="font-mono text-xs uppercase tracking-widest text-muted"><%= alert ? "Heads up" : "Done" %> · </span><%= alert || notice %>
+        </p>
+      </div>
+    <% end %>
+
+    <main>
+      <%= yield %>
+    </main>
+
+    <footer class="mx-auto mt-24 max-w-6xl border-t border-line px-4 py-10 text-sm text-muted sm:px-6">
+      <div class="flex flex-col justify-between gap-4 sm:flex-row">
+        <p>Overdrive is a <a class="underline underline-offset-4 hover:text-ink" href="https://hackclub.com">Hack Club</a> program for teenagers.</p>
+        <p class="flex gap-5">
+          <a class="underline underline-offset-4 hover:text-ink" href="<%= Overdrive.slack_join_url %>">Slack</a>
+          <a class="underline underline-offset-4 hover:text-ink" href="https://hackclub.com/conduct/">Code of conduct</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

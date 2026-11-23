@@ -1,0 +1,50 @@
+<div id="rsvp" class="scroll-mt-6 self-start rounded-xl border border-line bg-surface p-6 sm:p-8">
+  <div class="flex items-baseline justify-between gap-4">
+    <h2 class="font-display text-3xl font-black uppercase" style="font-stretch: 112%">RSVP</h2>
+    <p class="font-mono text-sm text-muted"><span class="text-ink"><%= number_with_delimiter(stats[:total]) %></span> in</p>
+  </div>
+
+  <% if my_rsvp %>
+    <p class="mt-4 text-muted">You're already RSVP'd. Nice.</p>
+    <%= link_to "See what's next →", thanks_rsvp_path, class: "od-btn-ghost mt-6 w-full" %>
+  <% else %>
+    <p class="mt-2 text-muted">We'll let you know the moment Overdrive opens.</p>
+
+    <%= button_to "/auth/hack_club", params: { intent: "rsvp" }, data: { turbo: false }, form_class: "mt-6", class: "od-btn-primary w-full" do %>
+      RSVP with Hack Club <span aria-hidden="true">→</span>
+    <% end %>
+    <p class="mt-2 text-center text-xs text-muted">One click if you already have a Hack Club account.</p>
+
+    <div class="my-6 flex items-center gap-3 text-xs text-muted">
+      <span class="h-px flex-1 bg-line"></span>or use your email<span class="h-px flex-1 bg-line"></span>
+    </div>
+
+    <%= form_with model: rsvp, url: rsvp_path, data: { turbo: false }, class: "space-y-4" do |f| %>
+      <% if rsvp.errors.any? %>
+        <p class="rounded-md border border-ink px-3 py-2 text-sm"><%= rsvp.errors.full_messages.to_sentence %></p>
+      <% end %>
+
+      <div>
+        <%= f.label :email, "Email", class: "mb-1.5 block text-sm font-medium" %>
+        <%= f.email_field :email, required: true, autocomplete: "email", placeholder: "you@example.com", class: "od-input" %>
+      </div>
+      <div>
+        <%= f.label :building, class: "mb-1.5 block text-sm font-medium" do %>What might you build? <span class="text-muted">(optional)</span><% end %>
+        <%= f.text_field :building, maxlength: 280, placeholder: "A split keyboard, a weather station, a game…", class: "od-input" %>
+      </div>
+      <div>
+        <%= f.label :heard_from, class: "mb-1.5 block text-sm font-medium" do %>How did you hear about us? <span class="text-muted">(optional)</span><% end %>
+        <%= f.select :heard_from, Rsvp::HEARD_FROM.invert, { include_blank: "Pick one" }, class: "od-input" %>
+      </div>
+
+      <% if Overdrive.turnstile_site_key.present? %>
+        <% content_for :head do %>
+          <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        <% end %>
+        <div class="cf-turnstile" data-sitekey="<%= Overdrive.turnstile_site_key %>" data-theme="auto"></div>
+      <% end %>
+
+      <%= f.submit "RSVP with email", class: "od-btn-ghost w-full cursor-pointer" %>
+    <% end %>
+  <% end %>
+</div>

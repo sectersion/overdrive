@@ -1,0 +1,10 @@
+<% content_for :title, "Admin · Overdrive" %>
+
+<section class="mx-auto max-w-md px-4 pt-16 sm:px-6">
+  <p class="od-eyebrow">Admin</p>
+  <h1 class="font-display mt-2 text-4xl font-black uppercase">Sign in</h1>
+  <p class="mt-4 text-muted">Admins are set by Slack ID or email in <span class="font-mono">ADMIN_SLACK_IDS</span> / <span class="font-mono">ADMIN_EMAILS</span>.</p>
+  <%= button_to "/auth/hack_club", params: { intent: "admin" }, data: { turbo: false }, form_class: "mt-8", class: "od-btn-primary w-full" do %>
+    Sign in with Hack Club
+  <% end %>
+</section>

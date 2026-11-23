@@ -1,0 +1,39 @@
+<% content_for :title, "You're in · Overdrive" %>
+
+<section class="mx-auto max-w-2xl px-4 pt-12 sm:px-6">
+  <p class="od-eyebrow">RSVP #<%= number_with_delimiter(Rsvp.where("id <= ?", @my_rsvp.id).count) %></p>
+  <h1 class="font-display mt-3 text-6xl font-black uppercase leading-none" style="font-stretch: 112%">You're in.</h1>
+
+  <% if @my_rsvp.linked? %>
+    <p class="mt-6 text-lg text-muted">
+      Your RSVP is tied to your Hack Club account. We'll ping you on Slack when Overdrive opens in summer 2027.
+      <% if Overdrive.slack_rsvp_channel_id.present? %>We've added you to the Overdrive channel, so come say hi and tell people what you're planning.<% end %>
+    </p>
+    <% slack_url = Overdrive.slack_rsvp_channel_id.present? ? "https://hackclub.slack.com/archives/#{Overdrive.slack_rsvp_channel_id}" : "https://hackclub.slack.com" %>
+    <a href="<%= slack_url %>" class="od-btn-primary mt-8">Open the Hack Club Slack <span aria-hidden="true">→</span></a>
+  <% else %>
+    <p class="mt-6 text-lg text-muted">
+      We've saved <span class="text-ink"><%= @my_rsvp.email %></span>. One more step: Overdrive lives on the Hack Club Slack.
+      That's where you'll find teammates, get help, and hear first when it opens.
+    </p>
+
+    <ol class="mt-8 space-y-4">
+      <li class="rounded-lg border border-line bg-surface p-5">
+        <p class="font-mono text-xs text-muted">01</p>
+        <p class="mt-1 font-semibold">Join Hack Club and its Slack</p>
+        <p class="mt-1 text-muted">Create a free Hack Club account. It takes a minute.</p>
+        <a href="<%= Overdrive.slack_join_url %>" class="od-btn-primary mt-4">Join the Slack <span aria-hidden="true">→</span></a>
+      </li>
+      <li class="rounded-lg border border-line bg-surface p-5">
+        <p class="font-mono text-xs text-muted">02</p>
+        <p class="mt-1 font-semibold">Link it to your RSVP</p>
+        <p class="mt-1 text-muted">Come back here and sign in. We'll attach this RSVP to your account and add you to the Overdrive channel.</p>
+        <%= button_to "/auth/hack_club", params: { intent: "rsvp" }, data: { turbo: false }, form_class: "mt-4", class: "od-btn-ghost" do %>
+          I have a Hack Club account. Link it
+        <% end %>
+      </li>
+    </ol>
+  <% end %>
+
+  <p class="mt-12 text-muted">Know someone who'd build something great? Send them <span class="font-mono text-ink"><%= Overdrive.public_url.sub(%r{\Ahttps?://}, "") %></span>.</p>
+</section>

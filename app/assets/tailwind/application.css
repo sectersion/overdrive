@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/*
+  Overdrive theme tokens.
+  v0 is pure grayscale on purpose: that's the hook. In v1, unlocked palettes
+  will swap these variables (globally via <html data-palette>, per profile via
+  a wrapper element), so components must only ever use these tokens and never
+  raw colors.
+*/
+:root {
+  --od-bg: #f4f4f3;
+  --od-surface: #ffffff;
+  --od-ink: #111111;
+  --od-muted: #5c5c5c;
+  --od-line: #d6d6d4;
+  --od-strong: #111111;
+  --od-on-strong: #f4f4f3;
+  --od-focus: #111111;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --od-bg: #0e0e0e;
+    --od-surface: #171717;
+    --od-ink: #ededed;
+    --od-muted: #9a9a9a;
+    --od-line: #2c2c2c;
+    --od-strong: #ededed;
+    --od-on-strong: #0e0e0e;
+    --od-focus: #ededed;
+  }
+}
+
+:root[data-theme="dark"] {
+  --od-bg: #0e0e0e;
+  --od-surface: #171717;
+  --od-ink: #ededed;
+  --od-muted: #9a9a9a;
+  --od-line: #2c2c2c;
+  --od-strong: #ededed;
+  --od-on-strong: #0e0e0e;
+  --od-focus: #ededed;
+}
+
+@theme inline {
+  --color-bg: var(--od-bg);
+  --color-surface: var(--od-surface);
+  --color-ink: var(--od-ink);
+  --color-muted: var(--od-muted);
+  --color-line: var(--od-line);
+  --color-strong: var(--od-strong);
+  --color-on-strong: var(--od-on-strong);
+  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html { background: var(--od-bg); color: var(--od-ink); }
+  body { background: var(--od-bg); color: var(--od-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 2px solid var(--od-focus); outline-offset: 3px; }
+  ::selection { background: var(--od-ink); color: var(--od-bg); }
+}
+
+@layer components {
+  .od-input {
+    @apply w-full rounded-md border border-line bg-surface px-3.5 py-2.5 text-base text-ink placeholder:text-muted focus:border-ink focus:outline-none;
+  }
+  .od-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 font-semibold transition active:translate-y-px bg-strong text-on-strong hover:opacity-90;
+  }
+  .od-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 font-semibold transition active:translate-y-px border border-line text-ink hover:border-ink;
+  }
+  .od-eyebrow { @apply font-mono text-xs uppercase tracking-[0.2em] text-muted; }
+}
+
+/* Locked color swatches: they're gray, but hovering lets a little color leak through. */
+.od-swatch {
+  filter: grayscale(1);
+  transition: filter 600ms ease;
+}
+.od-swatch:hover { filter: grayscale(0.7); }
+@media (prefers-reduced-motion: reduce) {
+  .od-swatch { transition: none; }
+}
+
+/* Faint scanline texture on the hero, for the "machine at idle" feel. */
+.od-grain {
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in srgb, var(--od-ink) 4%, transparent) 3px 4px);
+}

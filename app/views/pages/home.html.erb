@@ -1,0 +1,67 @@
+<%# The palette the community will win back. Shown fully gray in v0. %>
+<% swatches = %w[#ff3b30 #ff9500 #ffcc00 #34c759 #0a84ff #bf5af2] %>
+
+<section class="od-grain border-b border-line">
+  <div class="mx-auto grid max-w-6xl gap-12 px-4 pt-10 pb-16 sm:px-6 lg:grid-cols-[1.25fr_1fr] lg:pt-16 lg:pb-24">
+    <div>
+      <p class="od-eyebrow">Hack Club · Summer 2027</p>
+      <h1 class="font-display mt-4 text-[clamp(3rem,10vw,7.5rem)] leading-[0.86] font-black tracking-tight uppercase" style="font-stretch: 112%">
+        500,000<br>hours<br><span class="text-muted">or bust.</span>
+      </h1>
+      <p class="mt-8 max-w-xl text-lg text-muted">
+        Overdrive is a Hack Club program for teenagers who build hardware and software.
+        Log your hours, ship real projects, and earn the parts, tools and trips to build the next one.
+        Together we're going after the biggest shipped-hours record Hack Club has ever seen.
+      </p>
+
+      <div class="mt-10">
+        <p class="od-eyebrow">Everything here is gray. Help bring the color back.</p>
+        <ul class="mt-3 grid max-w-md grid-cols-6 gap-2" aria-label="Locked colors">
+          <% swatches.each_with_index do |hex, i| %>
+            <li class="od-swatch aspect-square rounded-md border border-line" style="background: <%= hex %>" title="Locked">
+              <span class="sr-only">Color <%= i + 1 %>, locked</span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <%= render "rsvps/card", rsvp: @rsvp, stats: @stats, my_rsvp: @my_rsvp %>
+  </div>
+</section>
+
+<section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+  <p class="od-eyebrow">How it works</p>
+  <ol class="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+    <% [
+      [ "Build", "Make anything: a keyboard, a robot, a game, a tool you actually need. Hardware and software both count. Track your time with Lapse and Hackatime, and keep a devlog." ],
+      [ "Ship", "When it's done, ship it. Real people review every project. Shipped hours earn you credit for the shop: parts, tools, gear and more." ],
+      [ "Bring the color back", "Overdrive starts in grayscale. As the community logs hours, color returns to the site. Ship your own work to unlock color on your profile." ],
+      [ "Summits", "The top shippers get to five flagship summits, with tickets and flight stipends in the shop." ]
+    ].each_with_index do |(title, body), i| %>
+      <li class="bg-surface p-6">
+        <p class="font-mono text-xs text-muted"><%= format("%02d", i + 1) %></p>
+        <h2 class="font-display mt-3 text-2xl font-extrabold uppercase" style="font-stretch: 110%"><%= title %></h2>
+        <p class="mt-3 text-muted"><%= body %></p>
+      </li>
+    <% end %>
+  </ol>
+</section>
+
+<section class="mx-auto max-w-3xl px-4 sm:px-6">
+  <p class="od-eyebrow">Questions</p>
+  <dl class="mt-6 divide-y divide-line border-y border-line">
+    <% [
+      [ "Who can join?", "Any teenager 18 or under, anywhere in the world. You don't need any experience." ],
+      [ "Does it cost anything?", "No. Overdrive is free." ],
+      [ "When does it start?", "Summer 2027. RSVP now and we'll tell you the moment it opens." ],
+      [ "Can I use AI?", "As a tool, sure. Projects made entirely by AI don't count. We review everything, and your devlogs and timelapses show your work." ],
+      [ "What's Hack Club?", "A nonprofit network of teenagers who make things. Join the Slack to meet tens of thousands of them." ]
+    ].each do |q, a| %>
+      <div class="py-5">
+        <dt class="font-semibold"><%= q %></dt>
+        <dd class="mt-2 text-muted"><%= a %></dd>
+      </div>
+    <% end %>
+  </dl>
+</section>
